@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+    "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Bundle identity -->
+    <key>CFBundleIdentifier</key>
+    <string>com.julius-os.driver.serial</string>
+
+    <key>CFBundleName</key>
+    <string>JuliusSerial</string>
+
+    <key>CFBundleVersion</key>
+    <string>1.0.0</string>
+
+    <key>CFBundleExecutable</key>
+    <string>JuliusSerial</string>
+
+    <key>CFBundlePackageType</key>
+    <string>KEXT</string>
+
+    <key>CFBundleSignature</key>
+    <string>????</string>
+
+    <!-- I/O Kit personalities: how the kext matches hardware -->
+    <key>IOKitPersonalities</key>
+    <dict>
+
+        <!-- ARM64 / QEMU virt: PL011 UART -->
+        <key>JuliusSerial-PL011</key>
+        <dict>
+            <key>CFBundleIdentifier</key>
+            <string>com.julius-os.driver.serial</string>
+
+            <key>IOClass</key>
+            <string>JuliusSerialDriver</string>
+
+            <!-- Match any device-tree node named "pl011" or "uart" -->
+            <key>IOProviderClass</key>
+            <string>IOPlatformDevice</string>
+
+            <key>IONameMatch</key>
+            <array>
+                <string>pl011</string>
+                <string>arm,pl011</string>
+                <string>Julius,uart</string>
+            </array>
+
+            <!-- Probe score: higher = preferred over generic drivers -->
+            <key>IOProbeScore</key>
+            <integer>1000</integer>
+        </dict>
+
+        <!-- x86_64 / QEMU q35: 16550 UART on COM1 -->
+        <key>JuliusSerial-16550</key>
+        <dict>
+            <key>CFBundleIdentifier</key>
+            <string>com.julius-os.driver.serial</string>
+
+            <key>IOClass</key>
+            <string>JuliusSerialDriver</string>
+
+            <key>IOProviderClass</key>
+            <string>IOPlatformDevice</string>
+
+            <key>IONameMatch</key>
+            <array>
+                <string>pnp-PNP0501</string>
+                <string>16550</string>
+            </array>
+
+            <key>IOProbeScore</key>
+            <integer>1000</integer>
+        </dict>
+
+    </dict>
+
+    <!-- Required KPIs (Kernel Programming Interfaces) this kext uses -->
+    <key>OSBundleLibraries</key>
+    <dict>
+        <key>com.apple.kpi.iokit</key>
+        <string>12.0.0</string>
+
+        <key>com.apple.kpi.libkern</key>
+        <string>12.0.0</string>
+
+        <key>com.apple.kpi.mach</key>
+        <string>12.0.0</string>
+    </dict>
+
+    <!-- Allow loading in DEVELOPMENT kernels without code signing -->
+    <key>SecKeychainItemPrivKey</key>
+    <false/>
+</dict>
+</plist>
