@@ -1,0 +1,3 @@
+[submodule "kernel/xnu"]
+	path = kernel/xnu
+	url = https://github.com/apple-oss-distributions/xnu.git
